@@ -18,7 +18,7 @@ dp = Dispatcher(bot)
 
 
 async def on_startup(_):
-    print()
+    print('Бот запущен!')
 
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message):
@@ -32,9 +32,14 @@ async def help_command(message: types.Message):
 
 
 @dp.message_handler(commands=['vk', 'tg', 'mail'])
-async def ans(message: types.Message):
+async def answer(message: types.Message):
     await message.answer(text=s_i.MY_DICT[message.text])
 
+
+#пасхалка ради пасхалки
+@dp.message_handler(commands=['kotik'])
+async def cat_command(message: types.Message):
+    await bot.send_sticker(message.from_user.id, sticker="CAACAgIAAxkBAAEJwPtkua-2Nhbe04tWcOaOSPQgv_nrsAACJhkAApqrsEvfn8VCsjY8WC8E")
 
 if __name__ == "__main__":
     executor.start_polling(dp, on_startup=on_startup)#типо запуск бота
