@@ -1,18 +1,17 @@
-#код самого бота
+#код)
 #в файле secret_information хранится переменная TOKEN с токеном бота
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, \
+    InlineKeyboardButton
 import secret_information as s_i
 import validators
 
 
 MY_DICT = {'github': 'https://github.com/soltiste'}
-
 bot = Bot(s_i.TOKEN)
 dp = Dispatcher(bot)
 kb1 = ReplyKeyboardMarkup(resize_keyboard=True)
 kb1.add(KeyboardButton('/change')).insert(KeyboardButton('/links'))
-
 
 
 async def on_startup(_):
@@ -26,17 +25,18 @@ async def start_command(message: types.Message):
                               'Нажмите /change, чтобы узнать, как добавить новую или удалить ненужную, и /links,' +
                               'чтобы просмотреть имеющиеся.',
                          parse_mode="HTML",
-                         reply_markup=kb1)#ответ на сообщение
+                         reply_markup=kb1)
     await message.delete()
-
 
 
 @dp.message_handler(commands=['change'])
 async def add_command(message: types.Message):
-    await message.reply(text='Чтобы добавить новую ссылку, напишите ниже команду /add, пробел, далее через знак двоеточия ' +
-                             '+ пробел ее название и саму ссылку одним сообщением. Например: \n/add vk: https://vk.com \n' +
-                             'Чтобы удалить ссылку, напишите /delete, пробел и название ссылки в чат одним сообщением.' +
-                             ' Например: \n/delete vk')#ответ на сообщение
+    await message.reply(text='Чтобы добавить новую ссылку, напишите ниже команду /add, пробел, далее через ' +
+                             'знак двоеточия + пробел ее название и саму ссылку одним сообщением. Например:' +
+                             ' \n/add vk: https://vk.com \nЧтобы удалить ссылку, напишите /delete, пробел и ' +
+                             'название ссылки в чат одним сообщением. Например: \n/delete vk')
+
+
 @dp.message_handler(commands=['add'])
 async def add_command(message: types.Message):
     if len(message.text) > 5:
@@ -45,13 +45,14 @@ async def add_command(message: types.Message):
             k, v = (my_str + ' ').split(': ')
             if (v != ' ') and validators.url(v[:-1]):
                 MY_DICT[k] = v[:-1]
-                await message.reply(text='Ссылка успешно добавлена')  # ответ на сообщение
+                await message.reply(text='Ссылка успешно добавлена')
             else:
                 await message.reply(text='Что-то не так с ссылкой, попробуйте еще раз')
         else:
             await message.reply(text='Что-то не так с двоеточием и пробелом, попробуйте еще раз')
     else:
         await message.reply(text='Вы ничего не написали, попробуйте еще раз')
+
 
 @dp.message_handler(commands=['delete'])
 async def add_command(message: types.Message):
@@ -92,9 +93,10 @@ async def answer_command(message: types.Message):
 #пасхалка ради пасхалки
 @dp.message_handler(commands=['kotik'])
 async def cat_command(message: types.Message):
-    await bot.send_sticker(message.from_user.id, sticker="CAACAgIAAxkBAAEJwPtkua-2Nhbe04tWcOaOSPQgv_nrsAACJhkAApqrsEvfn8VCsjY8WC8E")
+    await bot.send_sticker(message.from_user.id, sticker="CAACAgIAAxkBAAEJwPtkua-2Nhbe04tWcOaOSPQgv"+
+                                                         "_nrsAACJhkAApqrsEvfn8VCsjY8WC8E")
 
 if __name__ == "__main__":
-    executor.start_polling(dp, on_startup=on_startup)#типо запуск бота
+    executor.start_polling(dp, on_startup=on_startup)
 
 
